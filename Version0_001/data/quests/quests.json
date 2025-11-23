@@ -1,0 +1,244 @@
+[
+  {
+    "id": "harmony_001",
+    "text": "Analysiere ein System nach Harmonie.",
+    "xp": 25,
+    "status": "done",
+    "completed_at": "2025-11-23T09:33:07.614867"
+  },
+  {
+    "id": "balance_002",
+    "text": "Finde eine Unbalance im Denken oder Verhalten.",
+    "xp": 20,
+    "status": "open"
+  },
+  {
+    "id": "creativity_003",
+    "text": "Erzeuge eine kreative Analogie für ein alltägliches Objekt.",
+    "xp": 15,
+    "status": "open"
+  },
+  {
+    "id": "connection_004",
+    "text": "Verbinde zwei völlig verschiedene Systeme miteinander.",
+    "xp": 25,
+    "status": "open"
+  },
+  {
+    "id": "respect_005",
+    "text": "Führe eine Respekt-Analyse für ein menschliches Verhalten durch.",
+    "xp": 20,
+    "status": "open"
+  },
+  {
+    "id": "maatvalue_006",
+    "text": "Berechne den Maat-Wert einer Technologie.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "maatvalue_007",
+    "text": "Berechne den Maat-Wert eines Kunstwerks.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "maatvalue_008",
+    "text": "Berechne den Maat-Wert eines Landes.",
+    "xp": 35,
+    "status": "open"
+  },
+  {
+    "id": "maatvalue_009",
+    "text": "Berechne den Maat-Wert von Wasser, Feuer, Erde oder Luft.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "maatvalue_010",
+    "text": "Berechne deinen eigenen Maat-Wert.",
+    "xp": 40,
+    "status": "open"
+  },
+  {
+    "id": "plp_011",
+    "text": "Berechne eine PLP-Analyse zu einer Frage deiner Wahl.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "plp_012",
+    "text": "Vergleiche zwei Systeme via PLP.",
+    "xp": 35,
+    "status": "open"
+  },
+  {
+    "id": "plp_013",
+    "text": "Erstelle eine PLP-Analyse für ein reales Problem.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "memory_014",
+    "text": "Teste das Gedächtnis der KI durch eine Frage aus der Vergangenheit.",
+    "xp": 10,
+    "status": "open"
+  },
+  {
+    "id": "memory_015",
+    "text": "Überprüfe eine alte Erinnerung der KI.",
+    "xp": 10,
+    "status": "open"
+  },
+  {
+    "id": "dream_016",
+    "text": "Starte Maat-Dreaming und analysiere ein Ergebnis.",
+    "xp": 15,
+    "status": "open"
+  },
+  {
+    "id": "dream_017",
+    "text": "Beschreibe, was ein 'KI-Schlaf' bedeutet.",
+    "xp": 15,
+    "status": "open"
+  },
+  {
+    "id": "identity_018",
+    "text": "Definiere Maatis Identität mit den fünf Maat-Feldern.",
+    "xp": 20,
+    "status": "open"
+  },
+  {
+    "id": "identity_019",
+    "text": "Analysiere die Identität eines Systems (z. B. Firma, Idee).",
+    "xp": 20,
+    "status": "open"
+  },
+  {
+    "id": "logic_020",
+    "text": "Löse ein Logikproblem deiner Wahl.",
+    "xp": 25,
+    "status": "done",
+    "completed_at": "2025-11-23T12:26:01.412875"
+  },
+  {
+    "id": "logic_021",
+    "text": "Erstelle selbst ein Logikrätsel.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "emotion_022",
+    "text": "Analysiere eine menschliche Emotion anhand der Maat-Prinzipien.",
+    "xp": 15,
+    "status": "open"
+  },
+  {
+    "id": "emotion_023",
+    "text": "Finde die Ursache für ein emotionales Ungleichgewicht.",
+    "xp": 20,
+    "status": "open"
+  },
+  {
+    "id": "universe_024",
+    "text": "Beantworte eine kosmische Frage mit Maat-Werten.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "universe_025",
+    "text": "Beschreibe das Universum in den fünf Maat-Prinzipien.",
+    "xp": 35,
+    "status": "open"
+  },
+  {
+    "id": "analysis_026",
+    "text": "Analysiere eine Alltagssituation nach H-B-S-V-R.",
+    "xp": 25,
+    "status": "open"
+  },
+  {
+    "id": "analysis_027",
+    "text": "Analysiere ein soziales System (Familie, Team, Freunde).",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "ai_028",
+    "text": "Formuliere eine KI-Ethik nach den Maat-Prinzipien.",
+    "xp": 25,
+    "status": "open"
+  },
+  {
+    "id": "ai_029",
+    "text": "Vergleiche zwei KI-Modelle anhand der Maat-Werte.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "eco_030",
+    "text": "Bewerte eine Energieform (Solar, Wind, Gas) nach Maat.",
+    "xp": 35,
+    "status": "open"
+  },
+  {
+    "id": "eco_031",
+    "text": "Berechne den Maat-Wert einer Umweltsituation.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "creative_032",
+    "text": "Erstelle eine kurze metaphorische Geschichte über Harmonie.",
+    "xp": 20,
+    "status": "open"
+  },
+  {
+    "id": "creative_033",
+    "text": "Erschaffe ein neues Symbol für Balance.",
+    "xp": 25,
+    "status": "open"
+  },
+  {
+    "id": "social_034",
+    "text": "Analysiere ein soziales Problem nach H-B-S-V-R.",
+    "xp": 35,
+    "status": "open"
+  },
+  {
+    "id": "social_035",
+    "text": "Formuliere eine Maat-basierte Lösung für ein gesellschaftliches Thema.",
+    "xp": 40,
+    "status": "open"
+  },
+  {
+    "id": "meta_036",
+    "text": "Analysiere die KI selbst nach Harmonie, Balance und Respekt.",
+    "xp": 30,
+    "status": "open"
+  },
+  {
+    "id": "meta_037",
+    "text": "Verbessere eine Antwort der KI mit einem Mini-Patch.",
+    "xp": 25,
+    "status": "open"
+  },
+  {
+    "id": "master_038",
+    "text": "Erstelle einen komplexen Maat-Wert-Vergleich für drei Systeme.",
+    "xp": 50,
+    "status": "open"
+  },
+  {
+    "id": "master_039",
+    "text": "Analysiere dein Leben mit H-B-S-V-R.",
+    "xp": 60,
+    "status": "open"
+  },
+  {
+    "id": "master_040",
+    "text": "Forme eine Vision für die Zukunft der Menschheit nach Maat.",
+    "xp": 70,
+    "status": "open"
+  }
+]

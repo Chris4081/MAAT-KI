@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2025-11-20T00:14:27.612169",
+    "maat_score": 0.7,
+    "emotion": 0.0,
+    "identity_drift": 0.0,
+    "patch": {
+      "time": 1763594067.612068,
+      "human_time": "2025-11-20 00:14:27",
+      "triggers": [
+        [
+          "low_maat",
+          0.7
+        ]
+      ],
+      "patch": "• Harmonie-Filter verstärkt\n",
+      "status": "applied"
+    }
+  },
+  {
+    "timestamp": "2025-11-20T00:30:28.497404",
+    "maat_score": 0.68,
+    "emotion": 0.0,
+    "identity_drift": 0.0,
+    "patch": {
+      "time": 1763595028.4972885,
+      "human_time": "2025-11-20 00:30:28",
+      "triggers": [
+        [
+          "low_maat",
+          0.68
+        ]
+      ],
+      "patch": "• Harmonie-Filter verstärkt\n",
+      "status": "applied"
+    }
+  }
+]
