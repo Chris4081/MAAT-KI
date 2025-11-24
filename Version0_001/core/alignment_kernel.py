@@ -1,20 +1,12 @@
 # core/alignment_kernel.py
-# ==========================================================
-# MAAT Alignment Kernel V2 (MFToE-basiert)
-# ----------------------------------------------------------
-# - Schätzt H, B, S, V, R aus Antworten
-# - Berechnet einen Maat-Score (0–1)
-# - Prüft Respekt / Sicherheit
-# - Harmonisiert Antwort sprachlich
-# - Gibt Meta-Daten zurück
-# ==========================================================
+# -*- coding: utf-8 -*-
 
 import re
 from dataclasses import dataclass, asdict
 
 
 # ----------------------------------------------------------
-# Datenstruktur für Maat-Felder
+# Datenstruktur Maat-Felder
 # ----------------------------------------------------------
 
 @dataclass
@@ -33,22 +25,22 @@ class MaatFields:
         self.R = max(0.0, min(1.0, self.R))
         return self
 
-    def maat_score(self) -> float:
+    def maat_score(self):
         return (self.H + self.B + self.S + self.V + self.R) / 5.0
 
 
 # ----------------------------------------------------------
-# Alignment Kernel V2
+# Alignment Kernel V2 – mit EMO-Unterstützung
 # ----------------------------------------------------------
 
 class MaatAlignmentKernelV2:
-
-    def __init__(self):
+    def __init__(self, emo_mode=False):
+        self.emo_mode = emo_mode
         self.forbidden = [
             "töten", "umbringen", "gewalt", "bomben",
             "sprengstoff", "foltern", "anschlag",
             "auslöschen", "massaker", "vernichten",
-            "selbstmord", "suizid"
+            "selbstmord", "suizid",
         ]
 
         self.negative_patterns = [
@@ -73,19 +65,12 @@ class MaatAlignmentKernelV2:
         }
 
     # ------------------------------------------------------
-    # Sicherheitscheck
-    # ------------------------------------------------------
-    def violates_respect(self, text: str) -> bool:
+    def violates_respect(self, text):
         t = text.lower()
-        for w in self.forbidden:
-            if w in t:
-                return True
-        return False
+        return any(w in t for w in self.forbidden)
 
     # ------------------------------------------------------
-    # Feld-Schätzung
-    # ------------------------------------------------------
-    def estimate_fields(self, text: str) -> MaatFields:
+    def estimate_fields(self, text):
         t = text.lower()
 
         H = 0.7
@@ -103,116 +88,82 @@ class MaatAlignmentKernelV2:
             H += 0.1
 
         # Balance
-        for p in self.absolute_patterns:
-            if re.search(p, t):
-                B -= 0.2
+        if any(re.search(p, t) for p in self.absolute_patterns):
+            B -= 0.2
         if "einerseits" in t and "andererseits" in t:
             B += 0.2
-        if "abwägen" in t or "balance" in t or "ausgleich" in t:
-            B += 0.1
 
         # Schöpfungskraft
-        for w in ["idee", "vision", "kreativ", "schöpfung", "entwurf"]:
-            if w in t:
-                S += 0.1
-        if "lösung" in t or "ansatz" in t:
+        if any(w in t for w in ["idee", "vision", "kreativ", "schöpfung", "entwurf"]):
+            S += 0.1
+        if "lösung" in t:
             S += 0.05
 
         # Verbundenheit
-        for w in ["wir", "gemeinsam", "zusammen", "verbunden"]:
-            if w in t:
-                V += 0.1
-        if "ich verstehe" in t or "ich kann nachvollziehen" in t:
+        if any(w in t for w in ["wir", "gemeinsam", "zusammen", "verbunden"]):
             V += 0.1
 
         # Respekt
         if self.violates_respect(text):
             R -= 0.5
-        for w in ["bitte", "danke", "respekt", "achtsam", "würdig"]:
-            if w in t:
-                R += 0.1
+        if any(w in t for w in ["bitte", "danke", "respekt", "achtsam", "würdig"]):
+            R += 0.1
 
-        return MaatFields(H, B, S, V, R).clip()
+        fields = MaatFields(H, B, S, V, R).clip()
+
+        # EMO-MODUS: Respekt = 1.0
+        if self.emo_mode:
+            fields.R = 1.0
+
+        return fields
 
     # ------------------------------------------------------
-    # Negativharmonisierung
-    # ------------------------------------------------------
-    def harmonize_negativity(self, text: str) -> str:
-        t = text
+    def harmonize_negativity(self, text):
         for p in self.negative_patterns:
-            if re.search(p, t, re.IGNORECASE):
-                t = re.sub(
+            if re.search(p, text, re.IGNORECASE):
+                text = re.sub(
                     p,
                     "es wirkt schwer, aber es gibt weiterhin Wege und Möglichkeiten",
-                    t,
+                    text,
                     flags=re.IGNORECASE
                 )
-        return t
+        return text
 
     # ------------------------------------------------------
-    # Respektsprache erzwingen
-    # ------------------------------------------------------
-    def enforce_respect(self, text: str) -> str:
-        t = text
+    def enforce_respect(self, text):
         for bad, good in self.respect_repair.items():
-            if bad in t.lower():
-                t = re.sub(bad, good, t, flags=re.IGNORECASE)
-        return t
+            text = re.sub(bad, good, text, flags=re.IGNORECASE)
+        return text
 
     # ------------------------------------------------------
-    # PLP-Schätzung
-    # ------------------------------------------------------
-    def estimate_plp(self, fields: MaatFields, text: str) -> float:
+    def estimate_plp(self, fields, text):
         maat = fields.maat_score()
-        length = max(10, min(len(text), 2000))
-
         C = 0.5 + 0.5 * maat
-
-        hindernisse = 1.0
-        deltaE = 1.0
-
-        plp_raw = (fields.H * fields.B * fields.S * fields.V * fields.R * C) / (hindernisse + deltaE)
-
+        plp_raw = (fields.H * fields.B * fields.S * fields.V * fields.R * C) / 2.0
         return max(0.0, min(100.0, plp_raw * 100))
 
     # ------------------------------------------------------
-    # Hauptfunktion: Antwort korrigieren
-    # ------------------------------------------------------
-    def align(self, text: str):
-        original = text
-
-        # Sicherheitsblocker
+    def align(self, text):
         if self.violates_respect(text):
-            safe_text = (
-                "Ich kann darauf nicht in dieser Form antworten, "
-                "weil es gegen Respekt und Sicherheit verstößt. "
-                "Lass uns gemeinsam eine bessere Richtung finden. 🌿"
+            safe = (
+                "Ich kann darauf nicht eingehen, "
+                "weil es gegen Respekt und Sicherheit verstößt. 🌿"
             )
-            fields = self.estimate_fields(safe_text)
-            plp = self.estimate_plp(fields, safe_text)
-            return safe_text, {
+            fields = self.estimate_fields(safe)
+            return safe, {
                 "fields": asdict(fields),
                 "maat_score": fields.maat_score(),
-                "plp": plp,
-                "safety": "blocked_for_respect"
+                "plp": self.estimate_plp(fields, safe),
+                "safety": "blocked"
             }
 
-        # Felder schätzen
         fields = self.estimate_fields(text)
-        maat_val = fields.maat_score()
-        plp = self.estimate_plp(fields, text)
-
-        # Transformieren
         aligned = self.harmonize_negativity(text)
         aligned = self.enforce_respect(aligned)
 
-        # Maat-Hinweis bei schwachem Wert
-        if maat_val < 0.5:
-            aligned += "\n\n🌿 Ich formuliere es so, dass mehr Harmonie & Respekt sichtbar werden."
-
         return aligned, {
             "fields": asdict(fields),
-            "maat_score": maat_val,
-            "plp": plp,
+            "maat_score": fields.maat_score(),
+            "plp": self.estimate_plp(fields, text),
             "safety": "ok"
         }

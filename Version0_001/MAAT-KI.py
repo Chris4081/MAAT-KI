@@ -29,8 +29,11 @@ from core.emotion_maat_mapper import EmotionMaatMapper
 from core.memory_sqlite import SQLiteMemory
 from core.mie import MaatIntuitionEngine
 from core.reflexion import MaatReflexion
+from core.emo_mode_switch import select_emo_mode
+EMO_MODE = select_emo_mode()
 from core.self_evolution import SelfEvolutionEngine
 from core.streaming import stream_completion_gui
+from core.emo_systemprompt import EMO_SYSTEMPROMPT 
 from core.maat_dreaming import MaatDreaming
 from core.modes import (
     detect_mode,
@@ -68,6 +71,7 @@ AUTOR_MODE = False
 autor_used_this_turn = False
 autor_escape = False
 
+
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
@@ -80,8 +84,8 @@ persona = PersonaEngine()
 memory = SQLiteMemory(DB_PATH)
 reflex = MaatReflexion()
 emotion_engine = EmotionEngine()
-alignment_kernel = MaatAlignmentKernelV2()
-identity_kernel = IdentityKernel()
+alignment_kernel = MaatAlignmentKernelV2(emo_mode=EMO_MODE)
+identity_kernel  = IdentityKernel(emo_mode=EMO_MODE)
 quest_engine = QuestEngine()
 episodic = EpisodicMemory(os.path.join(DATA_DIR, "episodic_memory.db"))
 
@@ -130,6 +134,13 @@ LAST_REPLY_TIME = time.time()
 # PROFILE SYSTEM
 # ----------------------------------------
 profile_loader = ProfileLoader(ROOT)
+
+def set_emo_mode(on: bool):
+    global EMO_MODE, alignment_kernel, identity_kernel
+    EMO_MODE = on
+    alignment_kernel.set_emo_mode(on)
+    identity_kernel.set_emo_mode(on)
+
 
 
 # ======================================================================
@@ -271,7 +282,6 @@ def chat():
     global LAST_REPLY_TIME, AUTOR_MODE, autor_used_this_turn, autor_escape
 
     print(Fore.GREEN + "\n🌿 Starte MAAT-KI …\n")
-
     # PROFILE
     profile = choose_profile()
     profile_prompt = profile["systemprompt"]
@@ -280,7 +290,11 @@ def chat():
     time_context = build_time_context()
     LAST_REPLY_TIME = time.time()
     runtime_context = build_runtime_context(LAST_REPLY_TIME)
-
+    if EMO_MODE:
+        base_prompt = EMO_SYSTEMPROMPT
+    else:
+        base_prompt = MAAT_SYSTEMPROMPT_BASE
+        
     # SYSTEMPROMPT BUILDING
     combined_prompt = (
         MAAT_SYSTEMPROMPT_BASE
